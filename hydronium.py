@@ -72,7 +72,6 @@ def create_hydronium(structure, wat_id=116568):
     #structure.atoms.append(H3)
     #res.atoms.append(H3)
     #structure.res.append(H3)
-    #structure.add_atom(H3, res.name, res)
     structure.add_atom(H3, res.name, res)
     
     H3.residue = res
