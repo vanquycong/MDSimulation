@@ -93,7 +93,7 @@ def create_hydronium(structure, wat_id=116568):
     structure.angles.append(Angle(res.atoms[2], res.atoms[0], H3, type=AngleType(angle_k, angle_value)))
 
 structure = pmd.load_file("fix_wat.top", xyz="mini.gro")
-create_hydronium(structure, wat_id=116568)
+create_hydronium(structure, wat_id=116568) #Need index of the water oxygen as input e.g. see in VMD. 
 create_hydronium(structure, wat_id=117065)
 
 #structure.save("hydronium.gro", format="gro", overwrite=True)
