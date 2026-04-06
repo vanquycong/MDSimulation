@@ -62,16 +62,15 @@ def create_hydronium(structure, wat_id=116568):
     H3.xx, H3.xy, H3.xz = H3_coord
     
     print(H3_coord)
-    
     print(H3.number)  
     print(res.number)  # Should be True
     
     #structure.strip(f':{wat_res.number} & :WAT')
-    
     # Add H3 to the same residue
     #structure.atoms.append(H3)
     #res.atoms.append(H3)
     #structure.res.append(H3)
+    
     structure.add_atom(H3, res.name, res)
     
     H3.residue = res
