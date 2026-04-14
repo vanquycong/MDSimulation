@@ -53,3 +53,27 @@ for res in keep_residues:
     for atom in res.atoms:
         atom_indices.append(atom.idx)
 """
+#####################
+"""
+coords = np.array([[a.xx, a.xy, a.xz] for a in struct.atoms])
+center = coords.mean(axis=0)
+
+L = 1.48916
+half = L / 2
+
+keep_atoms = []
+
+for atom in struct.atoms:
+    x, y, z = atom.xx, atom.xy, atom.xz
+
+    if (abs(x - center[0]) < half and
+        abs(y - center[1]) < half and
+        abs(z - center[2]) < half):
+        keep_atoms.append(atom.idx)
+
+central = struct[keep_atoms]
+
+central.save("central_cell_1.gro", format="gro", overwrite=True)
+central.save("central_cell_1.top", format="gromacs",  overwrite=True)
+
+""
