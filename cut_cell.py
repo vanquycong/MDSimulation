@@ -6,7 +6,7 @@ import numpy as np
 struct = pmd.load_file("methylImizodal_super.top",xyz= "100ns.gro")
 keep_residues = []
 
-#########################Using center of mass of molecules and size of the original box
+#########################Way 1: Using center of mass of molecules and size of the original box -> May be not good
 L = 14.8916
 half = L / 2
 
@@ -30,7 +30,7 @@ central = struct[atom_indices]
 central.save("central_cell.gro", format="gro", overwrite=True)
 central.save("central_cell.top", format="gromacs",  overwrite=True)
 
-######################### Not optimal if the box size fluctuates
+######################### Using the box size
 """
 box = struct.box[:3]
 for res in struct.residues:
