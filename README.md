@@ -1,4 +1,3 @@
-# Code
 ## Gromacs:
 ### Extract a frame:
 1) gmx check -f traj.xtc
