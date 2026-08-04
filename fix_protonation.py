@@ -122,7 +122,7 @@ CHARMM36M_CHARGES = {
 EXPECTED_CHARGES = {
     "GLU": -1.00, "GLUP": 0.00,
     "ASP": -1.00, "ASPP": 0.00,
-    "HSD": 0.00, "HSE": 0.00, "HIP": +1.00
+    "HSD": 0.00, "HSE": 0.00, "HSP": +1.00
 }              
 # Load the structure
 amber = pmd.load_file("cphmd.parm7", "frame4690.pdb")
