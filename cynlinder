@@ -1,0 +1,14 @@
+set sel [atomselect top "protein"]
+measure center $sel weight mass
+
+#Line
+set com [measure center $sel weight mass]
+graphics top color red
+graphics top line [list [lindex $com 0] [lindex $com 1] -100] \
+                  [list [lindex $com 0] [lindex $com 1]  100] width 5 style solid
+
+#Cylinder
+graphics top color yellow
+graphics top cylinder [list [lindex $com 0] [lindex $com 1] -100] \
+                      [list [lindex $com 0] [lindex $com 1]  100] \
+                      radius 0.5 resolution 20
