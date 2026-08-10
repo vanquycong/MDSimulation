@@ -9,3 +9,6 @@
 3) rearrange the force field
 4) Remove the Cl- using parmed
 5) gmx insert-molecules -f NoCl.gro -ci lig.gro -nmol 99 -try 200000
+
+##Combing trajectory
+gmx trjcat -f system_run001.xtc system_run002.xtc system_run003.xtc -o combined.xtc (-settime)
