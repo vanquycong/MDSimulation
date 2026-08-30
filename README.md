@@ -10,10 +10,10 @@ gmx trjcat -f system_run001.xtc system_run002.xtc system_run003.xtc -o combined.
 ## Neutralization
 ### Way1
 1) Manually Creating "ions.mdp"
-        integrator = steep
-        emtol = 1000.0
-        emstep = 0.01
-        nsteps = 1
+        >integrator = steep
+        >emtol = 1000.0
+        >emstep = 0.01
+        >nsteps = 1
 2) gmx_mpi_d grompp -f ions.mdp -c system.gro -p system.top -o ions.tpr
 3) Manually Changing "WAT" to "SOL" in [ molecules] of "system.top"
 4) gmx_mpi_d genion -s ions.tpr -o system.gro -p system.top -pname SOD -nname CLA -neutral (-conc 0.15) 
