@@ -10,11 +10,11 @@
 4) Remove the Cl- using parmed
 5) gmx insert-molecules -f NoCl.gro -ci lig.gro -nmol 99 -try 200000
 
-##Combing trajectory
+## Combing trajectory
 gmx trjcat -f system_run001.xtc system_run002.xtc system_run003.xtc -o combined.xtc (-settime)
 
 ## Neutralization
-###Way1
+### Way1
 1) Manually Creating "ions.mdp"
         #integrator = steep
         #emtol = 1000.0
@@ -25,7 +25,7 @@ gmx trjcat -f system_run001.xtc system_run002.xtc system_run003.xtc -o combined.
 4) gmx_mpi_d genion -s ions.tpr -o system.gro -p system.top -pname SOD -nname CLA -neutral -conc 0.15
 5) Manually Changing "SOL" to "WAT" in [ molecules] of "system.top", because "SOL" is not in .gro file
 
-###Way2
+### Way2
 1) Manually Creating "ions.mdp"
 2) gmx_mpi_d grompp -f ions.mdp -c system.gro -p system.top -o ions.tpr
 3) CREATING Index Files by coping the SOL group and change it to WAT.
