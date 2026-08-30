@@ -16,7 +16,7 @@ gmx trjcat -f system_run001.xtc system_run002.xtc system_run003.xtc -o combined.
         #nsteps = 1
 2) gmx_mpi_d grompp -f ions.mdp -c system.gro -p system.top -o ions.tpr
 3) Manually Changing "WAT" to "SOL" in [ molecules] of "system.top"
-4) gmx_mpi_d genion -s ions.tpr -o system.gro -p system.top -pname SOD -nname CLA -neutral -conc 0.15
+4) gmx_mpi_d genion -s ions.tpr -o system.gro -p system.top -pname SOD -nname CLA -neutral (-conc 0.15) 
 5) Manually Changing "SOL" to "WAT" in [ molecules] of "system.top", because "SOL" is not in .gro file
 
 ### Way2
