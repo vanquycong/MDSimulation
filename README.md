@@ -10,8 +10,8 @@ gmx trjcat -f system_run001.xtc system_run002.xtc system_run003.xtc -o combined.
 ## Neutralization
 ### Way1
 1) Manually Creating "ions.mdp"
- - integrator = steep
- - emtol = 1000.0
+ * integrator = steep
+ + emtol = 1000.0
  - emstep = 0.01
  - nsteps = 1
 
