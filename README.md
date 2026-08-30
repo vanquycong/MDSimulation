@@ -10,14 +10,14 @@ gmx trjcat -f system_run001.xtc system_run002.xtc system_run003.xtc -o combined.
 ## Neutralization
 ### Way1
 1) Manually Creating "ions.mdp"
-```integrator = steep
+``` integrator = steep
 emtol = 1000.0
 emstep = 0.01
-nsteps = 1``` 
+nsteps = 1 
 
-3) gmx_mpi_d grompp -f ions.mdp -c system.gro -p system.top -o ions.tpr
-4) Manually Changing "WAT" to "SOL" in [ molecules] of "system.top"
-5) gmx_mpi_d genion -s ions.tpr -o system.gro -p system.top -pname SOD -nname CLA -neutral (-conc 0.15) 
+2) gmx_mpi_d grompp -f ions.mdp -c system.gro -p system.top -o ions.tpr
+3) Manually Changing "WAT" to "SOL" in [ molecules] of "system.top"
+4) gmx_mpi_d genion -s ions.tpr -o system.gro -p system.top -pname SOD -nname CLA -neutral (-conc 0.15) 
 6) Manually Changing "SOL" to "WAT" in [ molecules] of "system.top", because "SOL" is not in .gro file
 
 ### Way2
