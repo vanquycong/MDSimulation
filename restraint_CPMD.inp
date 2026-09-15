@@ -1,0 +1,147 @@
+#!/usr/bin/env python3
+
+import subprocess
+import re
+
+# ============================================================
+# Parameters
+# ============================================================
+
+gro_file = "restraint.gro"
+cpmd_input = "prod.inp"
+topology = "../../build/hydronium.top"
+
+output_file = "respos.txt"
+
+# GROMACS nm -> atomic units (Bohr)
+NM_TO_BOHR = 18.89726125
+
+# Final two RESPOS parameters
+respos_flag = 0
+respos_strength = "8.46E-4"
+
+
+# ============================================================
+# Read oxygen atoms from restraint.gro
+# ============================================================
+
+oxygens = []
+
+with open(gro_file, "r") as f:
+    lines = f.readlines()
+
+# Line 1 = title
+# Line 2 = number of atoms
+natoms = int(lines[1].strip())
+
+atom_lines = lines[2:2 + natoms]
+
+for line in atom_lines:
+
+    # Standard .gro fixed-width fields
+    resid = int(line[0:5])
+    resname = line[5:10].strip()
+    atomname = line[10:15].strip()
+
+    if atomname == "O":
+        x = float(line[20:28])
+        y = float(line[28:36])
+        z = float(line[36:44])
+
+        oxygens.append({
+            "resid": resid,
+            "resname": resname,
+            "atomname": atomname,
+            "x": x,
+            "y": y,
+            "z": z
+        })
+
+
+print(f"Found {len(oxygens)} oxygen atoms.")
+
+
+# ============================================================
+# Find corresponding CPMD atom indices
+# ============================================================
+
+results = []
+
+for i, atom in enumerate(oxygens, start=1):
+
+    resid = atom["resid"]
+
+    # Command equivalent to:
+    #
+    # python cpmdidx.py -c prod.inp -t ../../build/hydronium.top \
+    #     resid is 10799 and name is O
+    #
+    cmd = [
+        "python",
+        "cpmdidx.py",
+        "-c", cpmd_input,
+        "-t", topology,
+        "resid", "is", str(resid),
+        "and", "name", "is", "O"
+    ]
+
+    result = subprocess.run(
+        cmd,
+        capture_output=True,
+        text=True
+    )
+
+    output = result.stdout + result.stderr
+
+    # Look for:
+    #
+    # The atoms are:
+    # 134
+    #
+    match = re.search(r"The atoms are:\s*(\d+)", output)
+
+    if not match:
+        print()
+        print("ERROR: Could not determine CPMD index")
+        print(f"Residue: {resid}")
+        print("cpmdidx.py output:")
+        print(output)
+        raise RuntimeError(
+            f"Could not find CPMD atom index for resid {resid}"
+        )
+
+    cpmd_index = int(match.group(1))
+
+    # Convert nm -> Bohr
+    x_bohr = atom["x"] * NM_TO_BOHR
+    y_bohr = atom["y"] * NM_TO_BOHR
+    z_bohr = atom["z"] * NM_TO_BOHR
+
+    results.append(
+        (cpmd_index, x_bohr, y_bohr, z_bohr, resid)
+    )
+
+    print(
+        f"{i:4d}: resid {resid:5d} "
+        f"-> CPMD {cpmd_index:5d}"
+    )
+
+
+# ============================================================
+# Write CPMD RESPOS file
+# ============================================================
+
+with open(output_file, "w") as f:
+
+    for cpmd_index, x, y, z, resid in results:
+
+        f.write(
+            f"RESPOS {cpmd_index:4d} "
+            f"{x:10.3f} {y:10.3f} {z:10.3f} "
+            f"{respos_flag} {respos_strength}\n"
+        )
+
+
+print()
+print(f"Wrote {len(results)} RESPOS entries to:")
+print(output_file)
